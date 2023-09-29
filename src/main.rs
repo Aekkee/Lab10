@@ -70,7 +70,7 @@ fn locate_n_point(c: &Circle, plist: &Vec<Point>) -> Vec<Check> {
     let mut result: Vec<Check> = Vec::new();
     for i in plist {
         let d = (((i.x - c.center.x).powf(2.) + (i.y - c.center.y).powf(2.)).sqrt() * 100.0).round() / 100.;
-        if d == c.radius || d < c.radius {
+        if d <= c.radius {
             result.push(Check::Inside((Point{x: i.x, y: i.y}, d)))
         } else {
             result.push(Check::Outside((Point{x: i.x, y: i.y}, d)))
@@ -173,11 +173,11 @@ fn locate_n_point2(b: &Bound, plist: &Vec<Point>) -> Vec<Check2> {
     for i in plist {
         let d1 = (((i.x - b.c1.center.x).powf(2.) + (i.y - b.c1.center.y).powf(2.)).sqrt() * 100.0).round() / 100.;
         let d2 = (((i.x - b.c2.center.x).powf(2.) + (i.y - b.c2.center.y).powf(2.)).sqrt() * 100.0).round() / 100.;
-        if (d1 == b.c1.radius || d1 < b.c1.radius) && (d2 == b.c2.radius || d2 < b.c2.radius){
+        if (d1 <= b.c1.radius) && (d2 <= b.c2.radius){
             result.push(Check2::InsideBoth((Point{x: i.x, y: i.y}, d1, d2)))
-        } else if d1 == b.c1.radius || d1 < b.c1.radius {
+        } else if d1 <= b.c1.radius {
             result.push(Check2::InsideCircle1((Point{x: i.x, y: i.y}, d1, d2)))
-        } else if d2 == b.c2.radius || d2 < b.c2.radius {
+        } else if d2 <= b.c2.radius {
             result.push(Check2::InsideCircle2((Point{x: i.x, y: i.y}, d1, d2)))
         } else {
             result.push(Check2::OutsideBoth((Point{x: i.x, y: i.y}, d1, d2)))
